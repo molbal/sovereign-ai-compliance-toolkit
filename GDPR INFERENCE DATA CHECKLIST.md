@@ -1,68 +1,34 @@
-GDPR INFERENCE DATA CHECKLIST
-Version: 1.0 | Review cadence: per deployment and quarterly
+# EU AI ACT CONFORMANCE MATRIX
+## Version: 1.0 | Applies to: High-Risk AI Systems (Annex III)
 
-LAWFUL BASIS AND PURPOSE LIMITATION
-[ ] A lawful basis under Article 6 is identified and documented
-    for each inference workload processing personal data
-[ ] The purpose for which data is processed during inference does
-    not exceed the purpose for which it was originally collected
-[ ] Special category data under Article 9 has been identified,
-    and an explicit consent record or Article 9(2) exemption
-    is documented where applicable
+### SYSTEM CLASSIFICATION
+- [ ] The system has been assessed against Annex III use case categories
+- [ ] A documented classification decision exists, including the reasoning for the risk tier assigned
 
-DATA MINIMISATION AND PROMPT DESIGN
-[ ] System prompts have been reviewed to confirm personal data
-    is injected only where strictly necessary for the task
-[ ] Retrieved context is scoped to the minimum required; full-document
-    injection into the context window is reviewed and justified
-    where used
-[ ] Conversation history injected into context is subject to a
-    documented retention limit before truncation
-[ ] Output token volume has been reviewed; verbose generation
-    containing personal data that is not required by the task
-    has been constrained at the prompt or schema level
+### TECHNICAL DOCUMENTATION (ARTICLE 11)
+- [ ] A technical documentation package covers system architecture, training data characteristics, and intended purpose
+- [ ] The model version in production is recorded with the deployment date and the validation results at that version
+- [ ] Third-party components, including open-weight models, inference engines, and retrieval systems, are identified with version, license, and provenance documentation
+- [ ] Performance is documented on the actual task the system is deployed for, separately from generic benchmark results
 
-RESIDENCY AND TRANSFER CONTROLS
-[ ] The physical location of all inference hardware is confirmed
-    and documented for each workload tier
-[ ] Every dependency in the inference stack (model registry, secrets
-    management, logging pipeline, vector store) is mapped and verified
-    to be within the residency boundary or confirmed as non-contact
-    with personal data
-[ ] No automated failover path routes personal data outside the
-    defined residency boundary; this has been tested under simulated
-    failure conditions, not just reviewed on a diagram
-[ ] If a third-party processor is involved, a compliant Article 28
-    Data Processing Agreement is in place and the processor's
-    sub-processor list has been reviewed
+### DATA GOVERNANCE (ARTICLE 10)
+- [ ] Training and fine-tuning datasets are documented with provenance, known limitations, and data preparation steps
+- [ ] Validation and test datasets are documented and kept separate from training data
+- [ ] A bias assessment has been conducted and findings are documented, including any mitigations applied
 
-DATA SUBJECT RIGHTS
-[ ] A documented procedure exists for responding to subject access
-    requests that may implicate data processed during inference
-[ ] A deletion procedure exists for personal data that may be
-    represented in fine-tuned model weights, including a documented
-    position on whether weight retraining is required to satisfy
-    an erasure request
-[ ] Retention periods for inference logs containing personal data
-    are defined, enforced by automated deletion, and documented
+### LOGGING AND AUDITABILITY (ARTICLE 12)
+- [ ] The system generates logs sufficient to reconstruct system operation post-hoc for the retention period required by the applicable sector regulation
+- [ ] Logs are stored in a write-once or cryptographically tamper-evident format
+- [ ] Log retention period is defined and enforced
+- [ ] A documented procedure exists for retrieving logs in response to a regulatory request within an operationally realistic timeframe
 
-SECURITY CONTROLS (ARTICLES 5 AND 32)
-[ ] KV cache isolation between tenant sessions has been explicitly
-    configured and verified; inference engine defaults have not
-    been assumed to be sufficient
-[ ] Inference logs containing prompt and response content are
-    classified at the sensitivity level of the data they may contain
-    and subject to equivalent access controls
-[ ] A prompt injection risk assessment has been completed for any
-    workload that retrieves content from external or user-controlled
-    sources before injecting it into the context window
-[ ] Weight files for models fine-tuned on personal data are stored
-    with access controls and audit logging equivalent to the source data
+### HUMAN OVERSIGHT (ARTICLE 14)
+- [ ] A named natural person is designated as responsible for oversight of each high-risk system in production
+- [ ] That person has documented understanding of the system's capabilities, limitations, and known failure modes
+- [ ] Intervention procedures are documented and tested: the oversight person can halt or override system outputs without requiring engineering involvement for standard scenarios
+- [ ] High-risk automated decisions are subject to a human review gate before producing legal or similarly significant effects on individuals
 
-INCIDENT RESPONSE
-[ ] A documented procedure exists for detecting and responding to
-    inference-layer data incidents, covering KV cache leakage,
-    prompt injection exploitation, and model weight exfiltration
-[ ] The 72-hour breach notification requirement under Article 33
-    has been mapped to the actual detection latency of the inference
-    monitoring pipeline, not assumed to be satisfiable in the abstract
+### TRANSPARENCY AND USER INFORMATION (ARTICLE 13)
+- [ ] Users are informed they are engaging with an AI system where this is not self-evident from context
+- [ ] The system's intended purpose, performance characteristics, and known limitations are documented in a form accessible to users or their representatives
+- [ ] Instructions for use are versioned alongside the model version they describe, so the documentation and the system cannot drift apart
